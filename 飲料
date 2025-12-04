@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<title>我的飲料評比本｜Drink Review</title>
+<!
+-手寫＋圓潤字體 -->
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@300;400;600;800&display=swap&quot; rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+:root {
+--bg-grad-1: #ffe4f1;
+--bg-grad-2: #e9fff5;
+--card-bg: #ffffff;
+--accent-pink: #ff9ac4;
+--accent-green: #7ac9a4;
+--accent-yellow: #ffd77a;
+--text-main: #433b4a;
+--text-light: #7b6f87;
+--border-soft: #f7cfe4;
+--shadow-soft: 0 12px 30px rgba(255, 155, 196, 0.25);
+--radius-big: 18px;
+--radius-small: 10px;
+}
+* {
+box-sizing: border-box;
+}
+
+body {
+margin: 0;
+min-height: 100vh;
+font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2));
+color: var(--text-main);
+display: flex;
+justify-content: center;
+padding: 24px 12px 40px;
+}
+
+.app {
+width: 100%;
+max-width: 1100px;
+background: rgba(255, 255, 255, 0.85);
+box-shadow: 0 18px 40px rgba(190, 144, 212, 0.25);
+border-radius: 26px;
+padding: 22px 18px 28px;
+backdrop-filter: blur(12px);
+border: 1.2px solid rgba(255, 255, 255, 0.9);
+}
+
+@media (min-width: 768px) {
+.app {
+padding: 28px 32px 32px;
+}
+}
+
+.app-header {
+display: flex;
+gap: 16px;
+align-items: center;
+margin-bottom: 18px;
+}
+
+.logo-circle {
+width: 60px;
+height: 60px;
+border-radius: 50%;
+background: radial-gradient(circle at 30% 20%, #ffeaf3, #ff9ac4);
+box-shadow: 0 8px 20px rgba(255, 121, 166, 0.35);
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+overflow: hidden;
+}
+
+.logo-straw {
+position: absolute;
+width: 7px;
+height: 46px;
+background: linear-gradient(180deg, #fff, #ffd2e7);
+border-radius: 4px;
+transform: rotate(18deg);
+top: -2px;
+right: 14px;
+box-shadow: 0 0 0 1px rgba(255,255,255,0.8);
+}
+
+.logo-cup {
+width: 30px;
+height: 34px;
+border-radius: 12px 12px 14px 14px;
+background: linear-gradient(160deg, #fff5fb, #ffc2dd);
+border: 1.4px solid rgba(255, 255, 255, 0.9);
+box-shadow: 0 4px 10px rgba(198, 93, 143, 0.6);
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+overflow: hidden;
+}
+
+.logo-pearls {
+position: absolute;
+bottom: 4px;
+display: flex;
+gap: 3px;
+}
+
+.logo-pearls span {
+width: 6px;
+height: 6px;
+border-radius: 50%;
+background: rgba(118, 81, 63, 0.95);
+}
+
+.logo-text-main {
+font-family: "Patrick Hand", system-ui;
+font-size: 24px;
+line-height: 1.1;
+}
+
+.logo-text-sub {
+font-size: 12px;
+color: var(--text-light);
+margin-top: 4px;
+}
+
+.chip {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 3px 9px;
+border-radius: 999px;
+background: rgba(255, 255, 255, 0.9);
+font-size: 11px;
+color: var(--accent-pink);
+border: 1px dashed rgba(255, 154, 196, 0.6);
+}
+
+.chip-dot {
+width: 6px;
+height: 6px;
+border-radius: 50%;
+background: linear-gradient(135deg, var(--accent-pink), var(--accent-yellow));
+}
+
+/* layout */
+.layout {
+display: grid;
+grid-template-columns: 1.1fr 1.3fr;
+gap: 18px;
+}
+
+@media (max-width: 880px) {
+.layout {
+grid-template-columns: 1fr;
+}
+}
+
+/* panel 樣式 */
+.panel {
+background: linear-gradient(135deg, #ffffff, #fff6fb);
+border-radius: 22px;
+padding: 16px 16px 18px;
+box-shadow: var(--shadow-soft);
+border: 1.2px solid var(--border-soft);
+position: relative;
+overflow: hidden;
+}
+
+.panel::before {
+content: "";
+position: absolute;
+width: 120px;
+height: 120px;
+border-radius: 40% 60% 65% 35%;
+background: radial-gradient(circle at 30% 20%, rgba(255, 226, 242, 0.9), rgba(255, 154, 196, 0));
+top: -60px;
+right: -40px;
+opacity: 0.7;
+pointer-events: none;
+}
+
+.panel-title {
+font-size: 16px;
+font-weight: 800;
+margin-bottom: 6px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.panel-subtitle {
+font-size: 12px;
+color: var(--text-light);
+margin-bottom: 12px;
+}
+
+/* 表單 */
+.form-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 10px 12px;
+position: relative;
+z-index: 1;
+}
+
+@media (max-width: 640px) {
+.form-grid {
+grid-template-columns: 1fr;
+}
+}
+
+.form-group {
+display: flex;
+flex-direction: column;
+gap: 3px;
+font-size: 13px;
+}
+
+.form-label {
+display: flex;
+align-items: center;
+justify-content: space-between;
+font-weight: 600;
+}
+
+.label-tag {
+font-size: 11px;
+color: var(--accent-pink);
+opacity: 0.9;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+border-radius: 999px;
+border: 1.2px solid rgba(255, 188, 214, 0.85);
+padding: 7px 11px;
+font-size: 13px;
+font-family: inherit;
+outline: none;
+background: rgba(255, 255, 255, 0.9);
+transition: all 0.18s ease;
+}
+
+textarea {
+border-radius: 14px;
+min-height: 60px;
+resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+border-color: var(--accent-pink);
+box-shadow: 0 0 0 1.5px rgba(255, 154, 196, 0.35);
+background: #fff;
+}
+
+.range-wrapper {
+display: flex;
+align-items: center;
+gap: 6px;
+}
+
+input[type="range"] {
+-webkit-appearance: none;
+appearance: none;
+width: 100%;
+height: 6px;
+border-radius: 999px;
+background: linear-gradient(90deg, #ffe1f0, #ffd77a);
+outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 16px;
+height: 16px;
+border-radius: 50%;
+background: #fff;
+border: 2px solid var(--accent-pink);
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+cursor: pointer;
+}
+
+.range-value {
+min-width: 20px;
+text-align: right;
+font-size: 12px;
+color: var(--text-light);
+}
+
+.form-row-span {
+grid-column: 1 / -1;
+}
+
+.hint {
+font-size: 11px;
+color: var(--text-light);
+margin-top: -4px;
+}
+
+.btn-add {
+margin-top: 8px;
+grid-column: 1 / -1;
+align-self: flex-end;
+justify-self: flex-end;
+border: none;
+border-radius: 999px;
+padding: 8px 18px;
+font-size: 13px;
+font-weight: 700;
+background: linear-gradient(135deg, var(--accent-pink), var(--accent-yellow));
+color: #fff;
+display: inline-flex;
+align-items: center;
+gap: 6px;
+cursor: pointer;
+box-shadow: 0 10px 20px rgba(255, 154, 196, 0.45);
+transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn-add span.icon {
+font-size: 16px;
+margin-top: -1px;
+}
+
+.btn-add:hover {
+transform: translateY(-1px);
+box-shadow: 0 12px 28px rgba(255, 154, 196, 0.55);
+}
+
+.btn-add:active {
+transform: translateY(1px);
+box-shadow: 0 6px 14px rgba(255, 154, 196, 0.4);
+}
+
+.badges-row {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+margin-top: 4px;
+}
+
+.badge {
+font-size: 11px;
+padding: 2px 7px;
+border-radius: 999px;
+border: 1px dashed rgba(255, 188, 214, 0.8);
+background: rgba(255, 255, 255, 0.8);
+color: var(--accent-green);
+}
+
+/* 列表區 */
+.toolbar {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+position: relative;
+z-index: 1;
+}
+
+.toolbar-left {
+display: flex;
+gap: 6px;
+align-items: center;
+flex-wrap: wrap;
+}
+
+.toolbar-title {
+font-size: 14px;
+font-weight: 700;
+display: flex;
+align-items: center;
+gap: 6px;
+}
+
+.pill-count {
+font-size: 11px;
+padding: 2px 8px;
+border-radius: 999px;
+background: rgba(255, 255, 255, 0.8);
+border: 1px solid rgba(255, 188, 214, 0.9);
+color: var(--accent-pink);
+}
+
+.toolbar-right {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+align-items: center;
+}
+
+.input-small {
+font-size: 12px;
+padding: 5px 10px;
+border-radius: 999px;
+border: 1px solid rgba(255, 188, 214, 0.85);
+background: rgba(255, 255, 255, 0.9);
+outline: none;
+}
+
+.select-small {
+font-size: 12px;
+padding: 5px 10px;
+border-radius: 999px;
+border: 1px solid rgba(255, 188, 214, 0.85);
+background: rgba(255, 255, 255, 0.9);
+outline: none;
+}
+
+.drink-list {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+gap: 10px;
+position: relative;
+z-index: 1;
+max-height: 520px;
+overflow-y: auto;
+padding-right: 4px;
+}
+
+.drink-card {
+background: var(--card-bg);
+border-radius: var(--radius-big);
+padding: 10px 11px 11px;
+box-shadow: 0 8px 20px rgba(175, 146, 198, 0.18);
+border: 1px solid rgba(255, 220, 237, 0.9);
+position: relative;
+overflow: hidden;
+}
+
+.drink-card::before {
+content: "";
+position: absolute;
+width: 80px;
+height: 80px;
+background: radial-gradient(circle at 0 0, rgba(255, 215, 122, 0.9), rgba(255, 215, 122, 0));
+right: -30px;
+top: -30px;
+opacity: 0.7;
+pointer-events: none;
+}
+
+.drink-header {
+display: flex;
+justify-content: space-between;
+gap: 6px;
+margin-bottom: 6px;
+align-items: flex-start;
+}
+
+.drink-store {
+font-size: 13px;
+font-weight: 800;
+display: flex;
+flex-direction: column;
+gap: 2px;
+}
+
+.drink-name {
+font-size: 12px;
+color: var(--text-light);
+}
+
+.score-badge {
+min-width: 44px;
+height: 44px;
+border-radius: 16px;
+background: radial-gradient(circle at 30% 10%, #fff7fb, #ff9ac4);
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+font-weight: 800;
+color: #fff;
+font-size: 16px;
+box-shadow: 0 6px 14px rgba(255, 154, 196, 0.6);
+}
+
+.score-badge small {
+font-size: 9px;
+opacity: 0.95;
+margin-top: -2px;
+}
+
+.drink-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 4px;
+margin-bottom: 4px;
+}
+
+.tag {
+font-size: 10px;
+padding: 2px 6px;
+border-radius: 999px;
+background: rgba(122, 201, 164, 0.09);
+color: var(--accent-green);
+border: 1px solid rgba(122, 201, 164, 0.45);
+}
+
+.tag-price {
+background: rgba(255, 215, 122, 0.1);
+color: #c89519;
+border-color: rgba(255, 215, 122, 0.75);
+}
+
+.meter-row {
+display: grid;
+grid-template-columns: repeat(3, minmax(0, 1fr));
+gap: 4px;
+margin-bottom: 4px;
+}
+
+.meter {
+display: flex;
+flex-direction: column;
+gap: 2px;
+}
+
+.meter-label {
+font-size: 10px;
+color: var(--text-light);
+display: flex;
+justify-content: space-between;
+}
+
+.meter-bar {
+width: 100%;
+height: 6px;
+border-radius: 999px;
+background: #f6eefa;
+overflow: hidden;
+position: relative;
+}
+
+.meter-fill {
+position: absolute;
+height: 100%;
+left: 0;
+top: 0;
+border-radius: 999px;
+background: linear-gradient(90deg, var(--accent-green), var(--accent-pink));
+}
+
+.pros-cons {
+font-size: 11px;
+margin-top: 4px;
+border-top: 1px dashed rgba(244, 205, 227, 0.8);
+padding-top: 4px;
+display: flex;
+flex-direction: column;
+gap: 2px;
+}
+
+.pros-cons strong {
+font-weight: 700;
+font-size: 11px;
+}
+
+.empty-state {
+font-size: 12px;
+color: var(--text-light);
+text-align: center;
+margin-top: 12px;
+}
+
+.footer-note {
+margin-top: 10px;
+font-size: 10px;
+color: var(--text-light);
+text-align: right;
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="app-header">
+<div class="logo-circle">
+<div class="logo-straw"></div>
+<div class="logo-cup">
+<div class="logo-pearls">
+<span></span><span></span><span></span>
+</div>
+</div>
+</div>
+<div>
+<div class="logo-text-main">我的飲料評比本</div>
+<div class="logo-text-sub">記錄每一杯療癒飲料的分數、優點與小缺點</div>
+<div class="badges-row">
+<div class="chip">
+<span class="chip-dot"></span>
+手繪 X 粉色療癒風
+</div>
+<span class="badge">支援本機儲存（LocalStorage）</span>
+</div>
+</div>
+</header>
+
+<div class="layout">
+<!
+-左側：輸入表單 -->
+<section class="panel">
+<div class="panel-title">➕ 新增一杯飲料</div>
+<div class="panel-subtitle">填寫下面資訊，幫今天這杯飲料留下專屬評語與分數。</div>
+<form id="drinkForm" class="form-grid">
+<div class="form-group">
+<label class="form-label">
+店家名稱
+<span class="label-tag">必填</span>
+</label>
+<input type="text" id="store" placeholder="例：清心福全、CoCo、迷客夏…" required />
+</div>
+
+<div class="form-group">
+<label class="form-label">
+飲料名稱
+<span class="label-tag">必填</span>
+</label>
+<input type="text" id="drinkName" placeholder="例：紅茶拿鐵、珍珠奶茶…" required />
+</div>
+
+<div class="form-group">
+<label class="form-label">
+總分（1–10）
+<span class="label-tag">整體感受</span>
+</label>
+<div class="range-wrapper">
+<input type="range" id="totalScore" min="1" max="10" value="8" />
+<div class="range-value" id="totalScoreValue">8</div>
+</div>
+</div>
+
+<div class="form-group">
+<label class="form-label">
+價格（元）
+<span class="label-tag">含加料後</span>
+</label>
+<input type="number" id="price" min="0" step="1" placeholder="例：55" />
+</div>
+
+<div class="form-group">
+<label class="form-label">
+甜度（1–5）
+</label>
+<div class="range-wrapper">
+<input type="range" id="sweet" min="1" max="5" value="3" />
+<div class="range-value" id="sweetValue">3</div>
+</div>
+</div>
+
+<div class="form-group">
+<label class="form-label">
+冰塊（1–5）
+</label>
+<div class="range-wrapper">
+<input type="range" id="ice" min="1" max="5" value="3" />
+<div class="range-value" id="iceValue">3</div>
+</div>
+</div>
+
+<div class="form-group">
+<label class="form-label">
+茶味濃度（1–5）
+</label>
+<div class="range-wrapper">
+<input type="range" id="tea" min="1" max="5" value="4" />
+<div class="range-value" id="teaValue">4</div>
+</div>
+</div>
+
+<div class="form-group">
+<label class="form-label">
+回購意願（1–5）
+</label>
+<div class="range-wrapper">
+<input type="range" id="repurchase" min="1" max="5" value="4" />
+<div class="range-value" id="repurchaseValue">4</div>
+</div>
+</div>
+
+<div class="form-group form-row-span">
+<label class="form-label">
+優點亮點
+<span class="label-tag">可以列出幾個關鍵詞</span>
+</label>
+<textarea id="pros" placeholder="例：茶味很香、奶味順口、珍珠有嚼勁、甜度剛好…"></textarea>
+</div>
+
+<div class="form-group form-row-span">
+<label class="form-label">
+小缺點 / 備註
+</label>
+<textarea id="cons" placeholder="例：冰塊太多、偏甜、等太久、杯子容易漏…"></textarea>
+<div class="hint">提示：優點與缺點會一起顯示在卡片下方，方便之後回顧。</div>
+</div>
+
+<button type="submit" class="btn-add">
+<span class="icon">🧋</span>
+<span>加入這杯飲料</span>
+</button>
+</form>
+</section>
+
+<!
+-右側：評比列表 -->
+<section class="panel">
+<div class="toolbar">
+<div class="toolbar-left">
+<div class="toolbar-title">
+飲料評比總覽
+<span class="pill-count" id="drinkCount">0 杯已記錄</span>
+</div>
+</div>
+<div class="toolbar-right">
+<input
+id="filterStore"
+class="input-small"
+type="text"
+placeholder="🔍 搜尋店家名稱"
+/>
+<select id="sortBy" class="select-small">
+<option value="newest">排序：最新在前</option>
+<option value="scoreDesc">排序：總分高 ➜ 低</option>
+<option value="priceAsc">排序：價格低 ➜ 高</option>
+<option value="priceDesc">排序：價格高 ➜ 低</option>
+</select>
+</div>
+</div>
+<div class="drink-list" id="drinkList">
+<div class="empty-state">還沒有任何飲料紀錄，先從左邊新增一杯開始吧 🥤</div>
+</div>
+
+<div class="footer-note">
+小提醒：資料只會儲存在你的瀏覽器，不會上傳到網路。
+</div>
+</section>
+</div>
+</div>
+
+<script>
+const drinksKey = "myDrinkReviews_v1";
+
+const form = document.getElementById("drinkForm");
+const totalScoreRange = document.getElementById("totalScore");
+const totalScoreValue = document.getElementById("totalScoreValue");
+const sweetRange = document.getElementById("sweet");
+const sweetValue = document.getElementById("sweetValue");
+const iceRange = document.getElementById("ice");
+const iceValue = document.getElementById("iceValue");
+const teaRange = document.getElementById("tea");
+const teaValue = document.getElementById("teaValue");
+const repurchaseRange = document.getElementById("repurchase");
+const repurchaseValue = document.getElementById("repurchaseValue");
+
+const drinkListEl = document.getElementById("drinkList");
+const drinkCountEl = document.getElementById("drinkCount");
+const filterStoreInput = document.getElementById("filterStore");
+const sortBySelect = document.getElementById("sortBy");
+
+let drinks = [];
+
+// 初始化：載入 LocalStorage
+function loadDrinks() {
+try {
+const saved = localStorage.getItem(drinksKey);
+if (saved) {
+drinks = JSON.parse(saved);
+}
+} catch (err) {
+console.error("Failed to load drinks", err);
+}
+renderDrinks();
+}
+
+function saveDrinks() {
+try {
+localStorage.setItem(drinksKey, JSON.stringify(drinks));
+} catch (err) {
+console.error("Failed to save drinks", err);
+}
+}
+
+// 渲染列表
+function renderDrinks() {
+const keyword = filterStoreInput.value.trim().toLowerCase();
+const sortBy = sortBySelect.value;
+
+let list = [...drinks];
+
+if (keyword) {
+list = list.filter(d =>
+d.store.toLowerCase().includes(keyword)
+);
+}
+
+// 排序
+list.sort((a, b) => {
+if (sortBy === "newest") {
+return b.createdAt
+a.createdAt;
+} else if (sortBy === "scoreDesc") {
+return b.totalScore
+a.totalScore;
+} else if (sortBy === "priceAsc") {
+if (a.price == null && b.price == null) return 0;
+if (a.price == null) return 1;
+if (b.price == null) return -1;
+return a.price
+b.price;
+} else if (sortBy === "priceDesc") {
+if (a.price == null && b.price == null) return 0;
+if (a.price == null) return 1;
+if (b.price == null) return -1;
+return b.price
+a.price;
+}
+return 0;
+});
+drinkCountEl.textContent = drinks.length + " 杯已記錄";
+
+if (!list.length) {
+drinkListEl.innerHTML = '<div class="empty-state">沒有符合條件的飲料，換個關鍵字看看？🍹</div>';
+return;
+}
+
+drinkListEl.innerHTML = list.map(d => {
+const sweetPercent = (d.sweet / 5) * 100;
+const icePercent = (d.ice / 5) * 100;
+const teaPercent = (d.tea / 5) * 100;
+const repPercent = (d.repurchase / 5) * 100;
+
+const priceLabel = d.price != null && d.price !== "" ? d.price + " 元" : "未記錄";
+
+return `
+<article class="drink-card">
+<div class="drink-header">
+<div class="drink-store">
+<span>${escapeHtml(d.store)}</span>
+<span class="drink-name">${escapeHtml(d.drinkName)}</span>
+</div>
+<div class="score-badge">
+<span>${d.totalScore}</span>
+<small>/ 10</small>
+</div>
+</div>
+<div class="drink-tags">
+<span class="tag tag-price">價格：${priceLabel}</span>
+<span class="tag">回購意願：${d.repurchase}/5</span>
+</div>
+<div class="meter-row">
+<div class="meter">
+<div class="meter-label">
+<span>甜度</span>
+<span>${d.sweet}/5</span>
+</div>
+<div class="meter-bar">
+<div class="meter-fill" style="width:${sweetPercent}%;"></div>
+</div>
+</div>
+<div class="meter">
+<div class="meter-label">
+<span>冰塊</span>
+<span>${d.ice}/5</span>
+</div>
+<div class="meter-bar">
+<div class="meter-fill" style="width:${icePercent}%;"></div>
+</div>
+</div>
+<div class="meter">
+<div class="meter-label">
+<span>茶味</span>
+<span>${d.tea}/5</span>
+</div>
+<div class="meter-bar">
+<div class="meter-fill" style="width:${teaPercent}%;"></div>
+</div>
+</div>
+</div>
+<div class="meter-row">
+<div class="meter">
+<div class="meter-label">
+<span>回購</span>
+<span>${d.repurchase}/5</span>
+</div>
+<div class="meter-bar">
+<div class="meter-fill" style="width:${repPercent}%;"></div>
+</div>
+</div>
+<div class="meter">
+<div class="meter-label">
+<span>記錄時間</span>
+<span>${formatTime(d.createdAt)}</span>
+</div>
+<div class="meter-bar">
+<div class="meter-fill" style="width:100%;opacity:0.12;"></div>
+</div>
+</div>
+</div>
+<div class="pros-cons">
+${d.pros ? `<div><strong>優點：</strong>${escapeHtml(d.pros)}</div>` : ""}
+${d.cons ? `<div><strong>小缺點：</strong>${escapeHtml(d.cons)}</div>` : ""}
+</div>
+</article>
+`;
+}).join("");
+}
+
+// 轉義避免 XSS
+function escapeHtml(str) {
+if (str == null) return "";
+return String(str)
+.replace(/&/g, "&amp;")
+.replace(/</g, "&lt;")
+.replace(/>/g, "&gt;")
+.replace(/"/g, "&quot;")
+.replace(/'/g, "&#39;");
+}
+
+function formatTime(ts) {
+const d = new Date(ts);
+const y = d.getFullYear();
+const m = String(d.getMonth() + 1).padStart(2, "0");
+const day = String(d.getDate()).padStart(2, "0");
+const hh = String(d.getHours()).padStart(2, "0");
+const mm = String(d.getMinutes()).padStart(2, "0");
+return `${m}/${day} ${hh}:${mm}`;
+}
+
+// 表單事件
+function setupRangeDisplay(rangeEl, displayEl) {
+displayEl.textContent = rangeEl.value;
+rangeEl.addEventListener("input", () => {
+displayEl.textContent = rangeEl.value;
+});
+}
+
+setupRangeDisplay(totalScoreRange, totalScoreValue);
+setupRangeDisplay(sweetRange, sweetValue);
+setupRangeDisplay(iceRange, iceValue);
+setupRangeDisplay(teaRange, teaValue);
+setupRangeDisplay(repurchaseRange, repurchaseValue);
+
+form.addEventListener("submit", (e) => {
+e.preventDefault();
+
+const store = document.getElementById("store").value.trim();
+const drinkName = document.getElementById("drinkName").value.trim();
+const totalScore = Number(totalScoreRange.value);
+const priceInput = document.getElementById("price").value.trim();
+const sweet = Number(sweetRange.value);
+const ice = Number(iceRange.value);
+const tea = Number(teaRange.value);
+const repurchase = Number(repurchaseRange.value);
+const pros = document.getElementById("pros").value.trim();
+const cons = document.getElementById("cons").value.trim();
+
+if (!store || !drinkName) {
+alert("請至少輸入「店家名稱」與「飲料名稱」唷。");
+return;
+}
+
+const price = priceInput !== "" ? Number(priceInput) : null;
+
+const newDrink = {
+id: Date.now(),
+store,
+drinkName,
+totalScore,
+price,
+sweet,
+ice,
+tea,
+repurchase,
+pros,
+cons,
+createdAt: Date.now()
+};
+
+drinks.push(newDrink);
+saveDrinks();
+renderDrinks();
+
+form.reset();
+totalScoreRange.value = 8;
+totalScoreValue.textContent = "8";
+sweetRange.value = 3;
+sweetValue.textContent = "3";
+iceRange.value = 3;
+iceValue.textContent = "3";
+teaRange.value = 4;
+teaValue.textContent = "4";
+repurchaseRange.value = 4;
+repurchaseValue.textContent = "4";
+});
+
+filterStoreInput.addEventListener("input", () => {
+renderDrinks();
+});
+
+sortBySelect.addEventListener("change", () => {
+renderDrinks();
+});
+
+// 初始載入
+loadDrinks();
+</script>
+</body>
+</html>
