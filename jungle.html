@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<title>叢林冒險：星光藤果之謎</title>
+<style>
+* {
+box-sizing: border-box;
+}
+
+body {
+margin: 0;
+padding: 0;
+font-family: "DFKai-SB", "KaiTi", "標楷體", "STKaiti", serif;
+background: radial-gradient(circle at top, #1f3b2f 0, #0a1410 45%, #020604 100%);
+color: #f2f5f0;
+}
+
+.page {
+max-width: 1000px;
+margin: 24px auto 40px;
+padding: 20px;
+}
+
+.title-box {
+text-align: center;
+margin-bottom: 16px;
+}
+
+h1 {
+margin: 0;
+font-size: 2.4rem;
+letter-spacing: 0.18rem;
+color: #ffe08a;
+text-shadow: 0 0 10px rgba(255, 255, 255, 0.18),
+0 0 18px rgba(249, 196, 108, 0.35);
+}
+
+.subtitle {
+margin-top: 8px;
+font-size: 0.95rem;
+color: #c5ddc0;
+}
+
+.layout {
+display: grid;
+grid-template-columns: 2fr 1fr;
+gap: 18px;
+}
+
+@media (max-width: 800px) {
+.layout {
+grid-template-columns: 1fr;
+}
+}
+
+.card {
+background: rgba(5, 20, 15, 0.86);
+border-radius: 16px;
+padding: 16px 18px 18px;
+border: 1px solid rgba(142, 186, 149, 0.3);
+box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
+backdrop-filter: blur(4px);
+}
+
+.card-header {
+display: flex;
+justify-content: space-between;
+align-items: baseline;
+margin-bottom: 8px;
+}
+
+.card-title {
+font-size: 1.2rem;
+color: #ffe08a;
+}
+
+.card-sub {
+font-size: 0.82rem;
+color: #9fb9a6;
+}
+
+/* 狀態列 */
+.status-bar {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+font-size: 0.9rem;
+margin-bottom: 10px;
+color: #dde8d9;
+}
+
+.status-item {
+padding: 4px 10px;
+border-radius: 999px;
+background: rgba(40, 80, 60, 0.8);
+}
+
+.status-label {
+opacity: 0.8;
+margin-right: 4px;
+}
+
+/* 劇情區 */
+.story-title {
+font-size: 1.1rem;
+margin: 4px 0 6px;
+color: #f7f1cc;
+}
+
+.story-text {
+font-size: 0.95rem;
+line-height: 1.6;
+color: #e6f0e5;
+min-height: 80px;
+}
+
+.moment-text {
+font-size: 0.88rem;
+margin-top: 10px;
+padding: 8px 10px;
+border-left: 3px solid #ffe08a;
+background: rgba(29, 53, 40, 0.8);
+border-radius: 8px;
+color: #f1e7c5;
+display: none;
+}
+
+/* 選項按鈕 */
+.choices {
+margin-top: 12px;
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+button {
+font-family: inherit;
+border-radius: 999px;
+border: none;
+padding: 8px 16px;
+cursor: pointer;
+font-size: 0.95rem;
+transition: transform 0.07s, box-shadow 0.15s, background 0.2s;
+}
+
+.btn-choice {
+text-align: left;
+background: linear-gradient(135deg, #2f5b42, #3d7a53);
+color: #f7f7f2;
+box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+border: 1px solid rgba(186, 219, 189, 0.4);
+white-space: normal;
+}
+
+.btn-choice:hover {
+background: linear-gradient(135deg, #396a4d, #469161);
+}
+
+.btn-primary {
+background: linear-gradient(135deg, #ffce6a, #ffb946);
+color: #3b2609;
+box-shadow: 0 8px 20px rgba(255, 192, 94, 0.6);
+margin-top: 10px;
+}
+
+.btn-primary:hover {
+background: linear-gradient(135deg, #ffd77f, #ffc155);
+}
+
+.btn-secondary {
+background: rgba(13, 34, 24, 0.95);
+color: #f1f3ea;
+border: 1px solid rgba(163, 196, 158, 0.6);
+margin-top: 6px;
+}
+
+.btn-secondary:hover {
+background: rgba(24, 51, 38, 0.95);
+}
+
+button:active {
+transform: scale(0.97);
+box-shadow: none;
+}
+
+/* 結束畫面 */
+#end-screen {
+margin-top: 12px;
+padding-top: 10px;
+border-top: 1px dashed rgba(188, 211, 185, 0.5);
+display: none;
+}
+
+.end-title {
+font-size: 1.05rem;
+color: #ffe6a5;
+margin-bottom: 4px;
+}
+
+.end-text {
+font-size: 0.92rem;
+color: #dde8d6;
+margin-bottom: 6px;
+line-height: 1.5;
+}
+
+.score-highlight {
+font-size: 1.1rem;
+color: #ffde89;
+font-weight: bold;
+}
+
+.name-input-row {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+align-items: center;
+margin: 4px 0;
+}
+
+input[type="text"] {
+padding: 6px 10px;
+border-radius: 999px;
+border: 1px solid rgba(168, 196, 164, 0.9);
+background: rgba(6, 22, 15, 0.9);
+color: #f0f7ec;
+min-width: 120px;
+font-family: inherit;
+font-size: 0.9rem;
+outline: none;
+}
+
+input[type="text"]:focus {
+border-color: #ffe08a;
+box-shadow: 0 0 0 1px rgba(255, 224, 138, 0.6);
+}
+
+.hint {
+font-size: 0.8rem;
+color: #9cb8a0;
+margin-top: 2px;
+}
+
+/* 排行榜 */
+.leaderboard-table {
+width: 100%;
+border-collapse: collapse;
+font-size: 0.9rem;
+margin-top: 8px;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+padding: 6px 4px;
+text-align: left;
+}
+
+.leaderboard-table thead {
+border-bottom: 1px solid rgba(188, 211, 185, 0.5);
+}
+
+.leaderboard-table th {
+color: #fbe7a6;
+}
+
+.leaderboard-table tbody tr:nth-child(odd) {
+background: rgba(11, 32, 22, 0.9);
+}
+
+.leaderboard-table tbody tr:nth-child(even) {
+background: rgba(16, 43, 30, 0.9);
+}
+
+.rank-medal {
+font-size: 0.96rem;
+}
+
+.rank-1 {
+color: #ffd966;
+}
+.rank-2 {
+color: #e0e0e0;
+}
+.rank-3 {
+color: #f4b183;
+}
+
+.lb-empty {
+font-size: 0.85rem;
+color: #a6b9a7;
+margin-top: 6px;
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="title-box">
+<h1>叢林冒險：星光藤果之謎</h1>
+<div class="subtitle">跟著你的小小探險魂，一起走進月光下的叢林深處——看看你能拿到幾分冒險點數？</div>
+</div>
+
+<div class="layout">
+<!
+-左邊：劇情＋操作 -->
+<div class="card">
+<div class="card-header">
+<div class="card-title">冒險進行中</div>
+<div class="card-sub">做出你的選擇，小心別被叢林「吃掉」。</div>
+</div>
+<div class="status-bar">
+<div class="status-item">
+<span class="status-label">當前章節：</span>
+<span id="status-step">—</span>
+</div>
+<div class="status-item">
+<span class="status-label">冒險分數：</span>
+<span id="status-score">0</span>
+</div>
+<div class="status-item">
+<span class="status-label">狀態：</span>
+<span id="status-state">準備出發</span>
+</div>
+</div>
+
+<div class="story-title" id="story-title"></div>
+<div class="story-text" id="story-text"></div>
+<div class="moment-text" id="moment-text"></div>
+
+<div class="choices" id="choices"></div>
+
+<button class="btn-secondary" id="restart-btn" style="display:none;">重新開始這趟冒險</button>
+
+<!
+-結局與紀錄分數 -->
+<div id="end-screen">
+<div class="end-title">冒險結束</div>
+<div class="end-text" id="end-text"></div>
+<div class="end-text">
+你的冒險分數是：
+<span class="score-highlight" id="final-score-text">0</span>
+</div>
+<div class="name-input-row">
+<span>把這次分數存進排行榜：</span>
+<input type="text" id="player-name" placeholder="輸入你的名字或暱稱" />
+<button class="btn-primary" id="save-score-btn">儲存分數</button>
+</div>
+<div class="hint">（排行榜只會存在你的這台裝置的瀏覽器裡，不會上傳到網路。）</div>
+</div>
+</div>
+
+<!
+-右邊：排行榜 -->
+<div class="card">
+<div class="card-header">
+<div class="card-title">叢林探險排行榜</div>
+<div class="card-sub">看看誰是最勇敢、最冷靜的叢林旅人。</div>
+</div>
+<table class="leaderboard-table">
+<thead>
+<tr>
+<th>排名</th>
+<th>名字</th>
+<th>分數</th>
+<th>日期</th>
+</tr>
+</thead>
+<tbody id="leaderboard-body"></tbody>
+</table>
+<div class="lb-empty" id="lb-empty">目前還沒有任何紀錄，當第一個完成冒險的人吧！</div>
+</div>
+</div>
+</div>
+
+<script>
+// ========== 劇情資料 ==========
+
+// 每個 step 代表一個章節
+// options 裡的 ending = true 表示這個選項會直接結束遊戲
+const steps = [
+{
+id: 0,
+title: "月光下的叢林入口",
+text:
+"夜色剛落下，叢林像一片深綠色的大牆立在你面前。傳說在叢林深處，有一顆名叫「星光藤果」的果實，能讓人看見自己真正想走的路。你背上背包，深吸一口氣。",
+options: [
+{
+text: "不再猶豫，立刻推開樹枝，走進叢林小徑。",
+points: 10,
+nextStep: 1,
+effect: "你踩過濕潤的泥土，蟲鳴與樹葉摩擦聲立刻包圍了你。",
+},
+{
+text: "先到入口附近的小村莊，打聽當地人的傳說與路線。",
+points: 8,
+nextStep: 2,
+effect: "你選擇準備更多資訊，或許能少走一些冤枉路。",
+},
+{
+text: "突然覺得人生平安就好，決定轉身回家睡覺。",
+points: -5,
+nextStep: null,
+ending: true,
+endingType: "bad",
+endingText:
+"你回到柔軟的床上，告訴自己：『改天再去就好。』只是，這個『改天』一直沒有出現。",
+},
+],
+},
+{
+id: 1,
+title: "濃霧小徑與詭異的腳印",
+text:
+"走了不久，一層淡淡的霧慢慢升起，你發現地上有兩種不同的腳印：一種是人類的靴子印，另一種像是某種大型動物留下的爪痕，向著不同的方向延伸。",
+options: [
+{
+text: "跟著人類的靴子印走，至少代表有人成功走過。",
+points: 8,
+nextStep: 3,
+effect: "靴子印顯得穩定而有方向，讓你覺得心裡安定不少。",
+},
+{
+text: "跟著巨大爪痕走，直覺告訴你，那裡也許才是真正的秘密。",
+points: 12,
+nextStep: 4,
+effect: "你壓低身子，小心翼翼地往未知的方向前進。",
+},
+{
+text: "停下來，在原地稍作休息，整理目前的線索。",
+points: 5,
+nextStep: 3,
+effect: "你喝了口水、調整呼吸，思緒變得清楚了些。",
+},
+],
+},
+{
+id: 2,
+title: "村莊裡的老獵人",
+text:
+"村莊裡的燈光溫暖。一位滿臉皺紋的老獵人請你坐下，聽你說完想尋找星光藤果的原因後，他笑了笑，從抽屜拿出一張手繪地圖。",
+options: [
+{
+text: "虛心請教老獵人，仔細記下他口中的危險地帶與安全路線。",
+points: 10,
+nextStep: 3,
+effect: "你在筆記本上畫滿箭頭與標記，心裡多了幾分底氣。",
+},
+{
+text: "只大概看過地圖，覺得自己臨場反應很好，不需要太多準備。",
+points: 4,
+nextStep: 3,
+effect: "你把地圖草草折起，心裡想：『到時再說吧。』",
+},
+{
+text: "問老獵人：『你願意和我一起進去嗎？』",
+points: 6,
+nextStep: null,
+ending: true,
+endingType: "normal",
+endingText:
+"老獵人看著牆上那些泛黃的獵槍與照片，搖搖頭：『這趟路是你自己要走的。』你突然明白，有些冒險，別人只能給你方向，卻不能替你走完。",
+},
+],
+},
+{
+id: 3,
+title: "藤蔓河與搖晃的吊橋",
+text:
+"你來到一條被藤蔓覆蓋的河邊。前方有一座看起來隨時會斷掉的吊橋，河裡傳來不知名生物拍打水面的聲音。地圖上則標註，往上游還有一條繞遠的石頭小路。",
+options: [
+{
+text: "鼓起勇氣，慢慢踏上吊橋，緊抓繩索往前走。",
+points: 12,
+nextStep: 5,
+effect: "吊橋在你腳下晃動，但你每一步都踩得更穩。",
+},
+{
+text: "選擇安穩一點，沿著上游石頭路繞遠路。",
+points: 7,
+nextStep: 5,
+effect: "你花了比較多時間，但沿途多看到許多隱藏的小瀑布。",
+},
+{
+text: "嘗試自己綁一條簡單的木筏，順勢順流而下。",
+points: 15,
+nextStep: null,
+ending: true,
+endingType: "bad",
+endingText:
+"木筏一開始看起來還撐得住，但遇到急流時瞬間解體。你被衝到下游的沙灘上，雖然平安無事，卻已經遠離星光藤果的路線，只好在夕陽下踏上返家之路。",
+},
+],
+},
+{
+id: 4,
+title: "獸王的注視",
+text:
+"沿著巨大的爪痕，你來到一片半開闊的草地。一頭金色瞳孔的大型黑豹靜靜地蹲在樹蔭下，眼神冷靜地打量著你。牠的頸部掛著一串刻著古老符號的木牌。",
+options: [
