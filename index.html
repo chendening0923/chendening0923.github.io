@@ -1,10 +1,234 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>迷克夏</title>
-    <link rel="icon" href="icon.png">
-  </head>
-  <body>
-    我要喝法芙娜可可鮮奶
-  </body>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<title>我的飲料評分</title>
+  <link rel="icon" href="icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+body {
+margin: 0;
+font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+background: #f8f6f2; /* 奶油白 */
+color: #333;
+line-height: 1.8;
+font-size: 18px; /* 字體加大 */
+}
+
+header {
+background: #f4f1eb;
+padding: 28px 20px;
+border-bottom: 1px solid #e0ded9;
+}
+
+header h1 {
+margin: 0;
+font-size: 26px;
+letter-spacing: 1px;
+font-weight: 600;
+color: #2f2e2c;
+}
+
+header p {
+margin: 6px 0 0;
+font-size: 17px;
+color: #6b665d;
+}
+
+main {
+max-width: 900px;
+margin: 30px auto 60px;
+padding: 0 20px;
+}
+
+.section {
+background: #ffffff;
+padding: 22px 26px;
+border-radius: 12px;
+border: 1px solid #e8e6e2;
+margin-bottom: 26px;
+}
+
+.section h2 {
+margin: 0 0 16px;
+font-size: 20px;
+font-weight: 600;
+color: #3b3a37;
+}
+
+input, select, textarea {
+width: 100%;
+padding: 10px 12px;
+font-size: 17px;
+border-radius: 8px;
+border: 1px solid #ccc;
+background: #fafafa;
+font-family: inherit;
+}
+
+textarea {
+resize: vertical;
+min-height: 70px;
+}
+
+button {
+padding: 10px 18px;
+font-size: 17px;
+border-radius: 8px;
+cursor: pointer;
+font-family: inherit;
+border: none;
+}
+
+.btn-primary {
+background: #d5b98a; /* 淡金色 */
+color: #fff;
+font-weight: 600;
+}
+
+.btn-primary:hover {
+background: #c9ab78;
+}
+
+.btn-secondary {
+background: #eee;
+color: #555;
+}
+
+.drink-card {
+border: 1px solid #e6e3dd;
+background: #ffffff;
+border-radius: 12px;
+padding: 18px 20px;
+margin-bottom: 18px;
+}
+
+.drink-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 6px;
+}
+
+.drink-name {
+font-size: 20px;
+font-weight: 600;
+color: #2f2e2c;
+}
+
+.drink-meta {
+font-size: 16px;
+color: #7a746b;
+}
+
+.notes {
+margin-top: 8px;
+font-size: 16px;
+white-space: pre-wrap;
+}
+
+.rating {
+font-size: 18px;
+color: #c9ab78; /* 金色星星 */
+margin-top: 6px;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>飲料評分筆記</h1>
+<p>乾淨、高質感的飲料紀錄本。每天一杯、記錄生活的味道。</p>
+</header>
+
+<main>
+
+<!
+-新增飲料 -->
+<section class="section">
+<h2>新增飲料</h2>
+<label>飲料名稱 *</label>
+<input id="name" type="text" placeholder="例如：鐵觀音奶茶、拿鐵…">
+
+<br><br>
+
+<label>店家名稱（非必填）</label>
+<input id="shop" type="text" placeholder="例如：清心、Louisa…">
+
+<br><br>
+
+<label>評分（1－5）</label>
+<select id="rating">
+<option value="5">★★★★★（5分）</option>
+<option value="4">★★★★☆（4分）</option>
+<option value="3">★★★☆☆（3分）</option>
+<option value="2">★★☆☆☆（2分）</option>
+<option value="1">★☆☆☆☆（1分）</option>
+</select>
+
+<br><br>
+
+<label>備註</label>
+<textarea id="notes" placeholder="風味、甜度、口感、是否回購、地點感受…"></textarea>
+
+<br><br>
+
+<button class="btn-primary" onclick="addDrink()">新增</button>
+</section>
+
+<!
+-顯示列表 -->
+<section class="section">
+<h2>我的飲料列表</h2>
+<div id="drinkList"></div>
+</section>
+</main>
+
+<script>
+let drinks = [];
+
+function addDrink() {
+const name = document.getElementById("name").value.trim();
+const shop = document.getElementById("shop").value.trim();
+const rating = document.getElementById("rating").value;
+const notes = document.getElementById("notes").value.trim();
+
+if (!name) {
+alert("請輸入飲料名稱！");
+return;
+}
+
+const drink = { name, shop, rating, notes };
+drinks.push(drink);
+
+document.getElementById("name").value = "";
+document.getElementById("shop").value = "";
+document.getElementById("notes").value = "";
+
+renderList();
+}
+
+function renderList() {
+const container = document.getElementById("drinkList");
+container.innerHTML = "";
+
+drinks.forEach((d, i) => {
+const card = document.createElement("div");
+card.className = "drink-card";
+
+card.innerHTML = `
+<div class="drink-header">
+<div class="drink-name">${d.name}</div>
+<div class="drink-meta">${d.shop || ""}</div>
+</div>
+<div class="rating">${"★".repeat(d.rating) + "☆".repeat(5
+d.rating)}</div>
+<div class="notes">${d.notes || ""}</div>
+`;
+container.appendChild(card);
+});
+}
+</script>
+
+</body>
 </html>
