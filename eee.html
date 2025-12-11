@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<title>我的飲料評分紀錄</title>
+<style>
+/* -
+-全站字體與背景 -
+-*/
+body {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: "DFKai-SB", "KaiTi", "標楷體", "STKaiti", serif;
+background: linear-gradient(135deg, #fce9e9, #fdf3ee);
+color: #5a4a4a;
+}
+* {
+box-sizing: inherit;
+}
+
+/* -
+-主要容器 -
+-*/
+.container {
+max-width: 900px;
+margin: 40px auto;
+padding: 24px 24px 32px;
+background: rgba(255, 255, 255, 0.9);
+border-radius: 18px;
+box-shadow: 0 18px 40px rgba(183, 110, 121, 0.18);
+border: 1px solid rgba(183, 110, 121, 0.25);
+backdrop-filter: blur(6px);
+}
+/* -
+-標題區 -
+-*/
+.header {
+text-align: center;
+margin-bottom: 24px;
+}
+.header h1 {
+margin: 0;
+font-size: 2.4rem; /* 標題字大一點 */
+letter-spacing: 0.2rem;
+color: #b76e79; /* 玫瑰金主色 */
+}
+
+.header p {
+margin-top: 10px;
+font-size: 1rem;
+color: #9a7b7f;
+}
+
+/* -
+-區塊標題 -
+-*/
+.section-title {
+font-size: 1.2rem;
+margin: 18px 0 10px;
+color: #b76e79;
+border-left: 4px solid #b76e79;
+padding-left: 10px;
+}
+/* -
+-表單樣式 -
+-*/
+form {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 16px 20px;
+margin-bottom: 18px;
+}
+.form-group {
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+
+label {
+font-size: 0.95rem;
+color: #8a6c70;
+}
+
+input[type="text"],
+select,
+textarea {
+padding: 8px 10px;
+border-radius: 10px;
+border: 1px solid #e5c9cf;
+background-color: #fff8f8;
+outline: none;
+font-family: inherit;
+font-size: 0.95rem;
+transition: border 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+border-color: #b76e79;
+box-shadow: 0 0 0 2px rgba(183, 110, 121, 0.18);
+background-color: #fffdfb;
+}
+
+textarea {
+resize: vertical;
+min-height: 60px;
+grid-column: 1 / -1; /* 讓評語能拉到整列 */
+}
+
+/* -
+-星星評分 -
+-*/
+.rating-wrapper {
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+.stars {
+display: flex;
+align-items: center;
+gap: 4px;
+font-size: 1.6rem;
+cursor: pointer;
+user-select: none;
+}
+
+.star {
+color: #d7b9bf; /* 未選中的淡玫瑰金 */
+transition: transform 0.15s, color 0.15s;
+}
+
+.star.active {
+color: #b76e79; /* 選中 */
+transform: scale(1.02);
+}
+
+.star:hover {
+transform: scale(1.1);
+}
+
+.rating-text {
+font-size: 0.9rem;
+color: #8a6c70;
+margin-left: 6px;
+}
+
+/* -
+-按鈕 -
+-*/
+.buttons {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin: 10px 0 6px;
+}
+button {
+border: none;
+padding: 8px 18px;
+border-radius: 999px;
+font-family: inherit;
+font-size: 0.95rem;
+cursor: pointer;
+transition: background-color 0.2s, box-shadow 0.2s, transform 0.08s;
+}
+
+.btn-primary {
+background: linear-gradient(135deg, #b76e79, #c58993);
+color: #fff;
+box-shadow: 0 8px 18px rgba(183, 110, 121, 0.35);
+}
+
+.btn-primary:hover {
+background: linear-gradient(135deg, #ac5e6b, #bf7a86);
+}
+
+.btn-secondary {
+background: #fbeff0;
+color: #b76e79;
+border: 1px solid #e5c9cf;
+}
+
+.btn-secondary:hover {
+background: #f5e3e5;
+}
+
+button:active {
+transform: scale(0.97);
+box-shadow: none;
+}
+
+/* -
+-列表表格 -
+-*/
+.table-wrapper {
+margin-top: 10px;
+border-radius: 14px;
+border: 1px solid #f0d7db;
+overflow: hidden;
+background-color: #fffdfc;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+font-size: 0.9rem;
+}
+
+thead {
+background: #f8e4e7;
+}
+
+th,
+td {
+padding: 10px 8px;
+text-align: left;
+}
+
+th {
+color: #a26c74;
+white-space: nowrap;
+}
+
+tbody tr:nth-child(even) {
+background-color: #fff7f8;
+}
+
+tbody tr:hover {
+background-color: #fceff1;
+}
+
+.tag {
+display: inline-block;
+padding: 2px 8px;
+border-radius: 999px;
+background-color: #f3dfe3;
+color: #8a5b63;
+font-size: 0.78rem;
+}
+
+.tag-light {
+background-color: #f7e8ea;
+}
+
+.star-display {
+color: #b76e79;
+font-size: 1rem;
+}
+
+.empty-message {
+text-align: center;
+padding: 16px 0;
+color: #b09197;
+font-size: 0.9rem;
+}
+
+.cell-actions button {
+font-size: 0.8rem;
+padding: 4px 10px;
+border-radius: 999px;
+}
+
+.small-note {
+font-size: 0.8rem;
+color: #a58a8e;
+text-align: right;
+margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+.header h1 {
+font-size: 2rem;
+}
+th, td {
+font-size: 0.82rem;
+}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<!
+-標題 -->
+<div class="header">
+<h1>飲料評分日記</h1>
+<p>紀錄每一杯療癒的飲料，像收藏小小的幸福清單。</p>
+</div>
+<!
+-表單 -->
+<h2 class="section-title">新增飲料紀錄</h2>
+<form id="drink-form">
+<div class="form-group">
+<label for="drink-name">飲料品項 *</label>
+<input type="text" id="drink-name" placeholder="例如：烏龍鮮奶茶、葡萄柚綠茶" required />
+</div>
+<div class="form-group">
+<label for="shop-name">店家 *</label>
+<input type="text" id="shop-name" placeholder="例如：春X堂、可X可、迷X嵐" required />
+</div>
+
+<div class="form-group">
+<label for="sweetness">甜度</label>
+<select id="sweetness">
+<option value="">— 請選擇 —</option>
+<option>無糖</option>
+<option>微糖</option>
+<option>少糖</option>
+<option>半糖</option>
+<option>正常糖</option>
+</select>
+</div>
+
+<div class="form-group">
+<label for="ice-level">冰度</label>
+<select id="ice-level">
+<option value="">— 請選擇 —</option>
+<option>去冰</option>
+<option>微冰</option>
+<option>少冰</option>
+<option>正常冰</option>
+<option>熱飲</option>
+</select>
+</div>
+
+<div class="rating-wrapper">
+<label>星級評分（1～5 顆星）</label>
+<div class="stars" id="star-rating">
+<span class="star" data-value="1">★</span>
+<span class="star" data-value="2">★</span>
+<span class="star" data-value="3">★</span>
+<span class="star" data-value="4">★</span>
+<span class="star" data-value="5">★</span>
+<span class="rating-text" id="rating-text">尚未評分</span>
+</div>
+<input type="hidden" id="rating-value" value="0" />
+</div>
+
+<div class="form-group" style="grid-column: 1 / -1;">
+<label for="comment">自己的評語</label>
+<textarea id="comment" placeholder="例如：茶味很濃、奶香剛好、珍珠偏硬、下次想試別的甜度…"></textarea>
+</div>
+</form>
+
+<div class="buttons">
+<button class="btn-primary" id="add-record-btn">新增紀錄</button>
+<button class="btn-secondary" id="clear-all-btn" type="button">清空全部紀錄</button>
+</div>
+<div class="small-note">＊資料會保存在本機瀏覽器（localStorage）。</div>
+
+<!
+-列表 -->
+<h2 class="section-title">我的飲料清單</h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>日期</th>
+<th>飲料品項</th>
+<th>店家</th>
+<th>甜度</th>
+<th>冰度</th>
+<th>評分</th>
+<th>評語</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody id="records-body">
+<!
+-JS 動態產生 -->
+</tbody>
+</table>
+<div class="empty-message" id="empty-message">目前還沒有任何飲料紀錄，喝到喜歡的可以試著寫一筆看看 ♡</div>
+</div>
+</div>
+<script>
+// --
+-LocalStorage Key ----
+const STORAGE_KEY = "drinkRatings";
+// --
+-DOM 元素 ----
+const form = document.getElementById("drink-form");
+const drinkNameInput = document.getElementById("drink-name");
+const shopNameInput = document.getElementById("shop-name");
+const sweetnessSelect = document.getElementById("sweetness");
+const iceSelect = document.getElementById("ice-level");
+const commentInput = document.getElementById("comment");
+const starRating = document.getElementById("star-rating");
+const ratingHidden = document.getElementById("rating-value");
+const ratingText = document.getElementById("rating-text");
+
+const addBtn = document.getElementById("add-record-btn");
+const clearAllBtn = document.getElementById("clear-all-btn");
+
+const recordsBody = document.getElementById("records-body");
+const emptyMessage = document.getElementById("empty-message");
+
+let records = [];
+
+// --
+-載入資料 ----
+function loadRecords() {
+const saved = localStorage.getItem(STORAGE_KEY);
+if (saved) {
+try {
+records = JSON.parse(saved);
+} catch (e) {
+records = [];
+}
+} else {
+records = [];
+}
+renderRecords();
+}
+// --
+-儲存資料 ----
+function saveRecords() {
+localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+}
+// --
+-星星顯示 ----
+function updateStarsDisplay(value) {
+const stars = starRating.querySelectorAll(".star");
+stars.forEach(star => {
+const starValue = Number(star.dataset.value);
+star.classList.toggle("active", starValue <= value);
+});
+if (value === 0) {
+ratingText.textContent = "尚未評分";
+} else {
+ratingText.textContent = value + " 顆星";
+}
+}
+
+// --
+-綁定星星事件 ----
+starRating.addEventListener("click", function (e) {
+if (e.target.classList.contains("star")) {
+const value = Number(e.target.dataset.value);
+ratingHidden.value = value;
+updateStarsDisplay(value);
+}
+});
+// --
+-新增紀錄 ----
+addBtn.addEventListener("click", function (e) {
+e.preventDefault();
+const drinkName = drinkNameInput.value.trim();
+const shopName = shopNameInput.value.trim();
+const sweetness = sweetnessSelect.value;
+const ice = iceSelect.value;
+const rating = Number(ratingHidden.value);
+const comment = commentInput.value.trim();
+
+if (!drinkName || !shopName) {
+alert("飲料品項和店家為必填項目喔！");
+return;
+}
+
+const today = new Date();
+const dateStr = today.toLocaleDateString("zh-TW");
+
+const newRecord = {
+id: Date.now(),
+drinkName,
+shopName,
+sweetness,
+ice,
+rating,
+comment,
+date: dateStr
+};
+
+records.unshift(newRecord); // 新的放最上面
+saveRecords();
+renderRecords();
+resetForm();
+});
+
+// --
+-清空表單 ----
+function resetForm() {
+form.reset();
+ratingHidden.value = 0;
+updateStarsDisplay(0);
+}
+// --
+-渲染列表 ----
+function renderRecords() {
+recordsBody.innerHTML = "";
+if (!records.length) {
+emptyMessage.style.display = "block";
+return;
+} else {
+emptyMessage.style.display = "none";
+}
+
+records.forEach(record => {
+const tr = document.createElement("tr");
+
+// 日期
+const tdDate = document.createElement("td");
+tdDate.textContent = record.date || "";
+tr.appendChild(tdDate);
+
+// 飲料
+const tdDrink = document.createElement("td");
+tdDrink.textContent = record.drinkName;
+tr.appendChild(tdDrink);
+
+// 店家
+const tdShop = document.createElement("td");
+tdShop.textContent = record.shopName;
+tr.appendChild(tdShop);
+
+// 甜度
+const tdSweet = document.createElement("td");
+if (record.sweetness) {
+const tag = document.createElement("span");
+tag.className = "tag";
+tag.textContent = record.sweetness;
+tdSweet.appendChild(tag);
+}
+tr.appendChild(tdSweet);
+
+// 冰度
+const tdIce = document.createElement("td");
+if (record.ice) {
+const tag = document.createElement("span");
+tag.className = "tag tag-light";
+tag.textContent = record.ice;
+tdIce.appendChild(tag);
+}
+tr.appendChild(tdIce);
+
+// 評分
+const tdRating = document.createElement("td");
+if (record.rating && record.rating > 0) {
+const stars = "★".repeat(record.rating) + "☆".repeat(5
+record.rating);
+const span = document.createElement("span");
+span.className = "star-display";
+span.textContent = stars;
+tdRating.appendChild(span);
+} else {
+tdRating.textContent = "—";
+}
+tr.appendChild(tdRating);
+// 評語
+const tdComment = document.createElement("td");
+tdComment.textContent = record.comment || "";
+tr.appendChild(tdComment);
+
+// 操作
+const tdActions = document.createElement("td");
+tdActions.className = "cell-actions";
+const delBtn = document.createElement("button");
+delBtn.textContent = "刪除";
+delBtn.className = "btn-secondary";
+delBtn.addEventListener("click", () => {
+if (confirm("確定要刪除這筆紀錄嗎？")) {
+deleteRecord(record.id);
+}
+});
+tdActions.appendChild(delBtn);
+tr.appendChild(tdActions);
+
+recordsBody.appendChild(tr);
+});
+}
+
+// --
+-刪除單筆 ----
+function deleteRecord(id) {
+records = records.filter(r => r.id !== id);
+saveRecords();
+renderRecords();
+}
+// --
+-清空全部 ----
+clearAllBtn.addEventListener("click", function () {
+if (!records.length) {
+alert("目前沒有任何紀錄。");
+return;
+}
+if (confirm("真的要清空所有飲料紀錄嗎？此動作無法復原。")) {
+records = [];
+saveRecords();
+renderRecords();
+}
+});
+// --
+-初始載入 ----
+loadRecords();
+</script>
+</body>
+</html>
